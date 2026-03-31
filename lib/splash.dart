@@ -75,12 +75,9 @@ class NGASplash {
                       key: const ValueKey('nga_splash_view'),
                       builder: (final ctx) {
                         final isDarkMode = MediaQuery.of(ctx).platformBrightness == Brightness.dark;
-                        final targetBgColor =
-                            bgColor ?? (isDarkMode ? const Color(0xFF000000) : const Color(0xFFF8F8F8));
-                        final targetTxtColor =
-                            txtColor ?? (isDarkMode ? const Color(0xFFF8F8F8) : const Color(0xFF000000));
-                        final targetTxtStyle =
-                            TextStyle(fontFamily: 'BOOT', package: 'nga_sdk', color: targetTxtColor);
+                        final targetBgColor = bgColor ?? (isDarkMode ? const Color(0xFF000000) : const Color(0xFFF8F8F8));
+                        final targetTxtColor = txtColor ?? (isDarkMode ? const Color(0xFFF8F8F8) : const Color(0xFF000000));
+                        final targetTxtStyle = TextStyle(fontFamily: 'BOOT', package: 'nga_sdk', color: targetTxtColor);
                         return Container(
                           color: targetBgColor,
                           alignment: Alignment.center,
@@ -89,10 +86,8 @@ class NGASplash {
                             children: [
                               ValueListenableBuilder(
                                 valueListenable: indexChar,
-                                builder: (final _, final int char, final __) => Text(
-                                  String.fromCharCode(char),
-                                  style: targetTxtStyle.copyWith(fontSize: 40),
-                                ),
+                                builder: (final _, final int char, final __) =>
+                                    Text(String.fromCharCode(char), style: targetTxtStyle.copyWith(fontSize: 40)),
                               ),
                               const SizedBox(height: 10),
                               ValueListenableBuilder(
@@ -108,9 +103,7 @@ class NGASplash {
             ),
           ),
           if (watermarkTxt.isNotEmpty)
-            Builder(
-              builder: (final ctx) => NGAWatermark.get(ctx, watermarkTxt, colorful: watermarkColorful),
-            ),
+            Builder(builder: (final ctx) => NGAWatermark.get(ctx, watermarkTxt, colorful: watermarkColorful)),
         ],
       ),
     );
@@ -124,13 +117,12 @@ extension NGASplashExt on Widget {
     final Future<void>? func,
     final String watermarkTxt = '',
     final bool watermarkColorful = false,
-  }) =>
-      NGASplash.view(
-        this,
-        bgColor: bgColor,
-        txtColor: txtColor,
-        func: func,
-        watermarkTxt: watermarkTxt,
-        watermarkColorful: watermarkColorful,
-      );
+  }) => NGASplash.view(
+    this,
+    bgColor: bgColor,
+    txtColor: txtColor,
+    func: func,
+    watermarkTxt: watermarkTxt,
+    watermarkColorful: watermarkColorful,
+  );
 }

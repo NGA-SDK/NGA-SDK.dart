@@ -39,20 +39,15 @@ class CUHeadLabel extends StatelessWidget {
   final double left, top, right, bottom;
   @override
   Widget build(final ctx) => Padding(
-        padding: EdgeInsets.fromLTRB(left, top, right, bottom),
-        child: SizedBox(
-          width: double.infinity,
-          child: ValueListenableBuilder(
-            valueListenable: CUWidget.themeColor,
-            builder: (final _, final Color dfltCl, final __) => Text(
-              label,
-              style: TextStyle(
-                color: color ?? dfltCl,
-              ),
-            ),
-          ),
-        ),
-      );
+    padding: EdgeInsets.fromLTRB(left, top, right, bottom),
+    child: SizedBox(
+      width: double.infinity,
+      child: ValueListenableBuilder(
+        valueListenable: CUWidget.themeColor,
+        builder: (final _, final Color dfltCl, final __) => Text(label, style: TextStyle(color: color ?? dfltCl)),
+      ),
+    ),
+  );
 }
 
 class _CUBaseCard extends StatelessWidget {
@@ -77,29 +72,24 @@ class _CUBaseCard extends StatelessWidget {
   final bool allPadding, limitHeight;
   @override
   Widget build(final ctx) => Padding(
-        padding: EdgeInsets.symmetric(horizontal: outPadding),
-        child: Material(
-          color: color ??
-              (MediaQuery.of(ctx).platformBrightness == Brightness.light
-                  ? CUWidget.white
-                  : CUWidget.black),
-          borderRadius: radius ?? CUWidget.radius,
-          child: Container(
-            constraints: limitHeight ? const BoxConstraints(minHeight: CUWidget.height) : null,
-            padding: allPadding ? EdgeInsets.all(padding) : null,
-            decoration: BoxDecoration(
-              borderRadius: radius ?? CUWidget.radius,
-            ),
-            child: child,
-          )
+    padding: EdgeInsets.symmetric(horizontal: outPadding),
+    child: Material(
+      color: color ?? (MediaQuery.of(ctx).platformBrightness == Brightness.light ? CUWidget.white : CUWidget.black),
+      borderRadius: radius ?? CUWidget.radius,
+      child:
+          Container(
+                constraints: limitHeight ? const BoxConstraints(minHeight: CUWidget.height) : null,
+                padding: allPadding ? EdgeInsets.all(padding) : null,
+                decoration: BoxDecoration(borderRadius: radius ?? CUWidget.radius),
+                child: child,
+              )
               .let(
-                (final widget) => onTap == null
-                    ? widget
-                    : InkWell(onTap: onTap, borderRadius: radius ?? CUWidget.radius, child: widget),
+                (final widget) =>
+                    onTap == null ? widget : InkWell(onTap: onTap, borderRadius: radius ?? CUWidget.radius, child: widget),
               )
               .let((final widget) => tip.isEmpty ? widget : Tooltip(message: tip, child: widget)),
-        ),
-      );
+    ),
+  );
 }
 
 class CUCard extends _CUBaseCard {
@@ -113,17 +103,17 @@ class CUCard extends _CUBaseCard {
     final String tip = '',
     final BorderRadius? radius,
   }) : super(
-          child,
-          key: key,
-          padding: padding,
-          outPadding: outPadding,
-          onTap: onTap,
-          color: color,
-          tip: tip,
-          radius: radius,
-          allPadding: true,
-          limitHeight: false,
-        );
+         child,
+         key: key,
+         padding: padding,
+         outPadding: outPadding,
+         onTap: onTap,
+         color: color,
+         tip: tip,
+         radius: radius,
+         allPadding: true,
+         limitHeight: false,
+       );
 }
 
 class CUProCard extends StatelessWidget {
@@ -153,65 +143,69 @@ class CUProCard extends StatelessWidget {
 
   @override
   Widget build(final context) => _CUBaseCard(
-        Row(
-          children: [
-            SizedBox(width: padding),
-            if (leading != null) ...[
+    Row(
+      children: [
+        SizedBox(width: padding),
+        if (leading != null) ...[
+          DefaultTextStyle(
+            style:
+                Theme.of(context).textTheme.bodyMedium ??
+                Theme.of(context).listTileTheme.leadingAndTrailingTextStyle ??
+                const ListTileThemeData().leadingAndTrailingTextStyle ??
+                const TextStyle(),
+            child: leading!,
+          ),
+          const SizedBox(width: 20),
+        ],
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: padding / 2),
               DefaultTextStyle(
-                style: Theme.of(context).textTheme.bodyMedium ??
-                    Theme.of(context).listTileTheme.leadingAndTrailingTextStyle ??
-                    const ListTileThemeData().leadingAndTrailingTextStyle ??
+                style:
+                    Theme.of(context).textTheme.bodyMedium ??
+                    Theme.of(context).listTileTheme.titleTextStyle ??
+                    const ListTileThemeData().titleTextStyle ??
                     const TextStyle(),
-                child: leading!,
+                child: title,
               ),
-              const SizedBox(width: 20),
+              if (subtitle != null) ...[
+                const SizedBox(height: 3),
+                DefaultTextStyle(
+                  style:
+                      Theme.of(context).textTheme.bodySmall ??
+                      Theme.of(context).listTileTheme.subtitleTextStyle ??
+                      const ListTileThemeData().subtitleTextStyle ??
+                      const TextStyle(),
+                  child: subtitle!,
+                ),
+              ],
+              SizedBox(height: padding / 2),
             ],
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: padding / 2),
-                  DefaultTextStyle(
-                    style: Theme.of(context).textTheme.bodyMedium ??
-                        Theme.of(context).listTileTheme.titleTextStyle ??
-                        const ListTileThemeData().titleTextStyle ??
-                        const TextStyle(),
-                    child: title,
-                  ),
-                  if (subtitle != null) ...[
-                    const SizedBox(height: 3),
-                    DefaultTextStyle(
-                      style: Theme.of(context).textTheme.bodySmall ??
-                          Theme.of(context).listTileTheme.subtitleTextStyle ??
-                          const ListTileThemeData().subtitleTextStyle ??
-                          const TextStyle(),
-                      child: subtitle!,
-                    ),
-                  ],
-                  SizedBox(height: padding / 2),
-                ],
-              ),
-            ),
-            DefaultTextStyle(
-              style: Theme.of(context).textTheme.bodyMedium ??
-                  Theme.of(context).listTileTheme.leadingAndTrailingTextStyle ??
-                  const ListTileThemeData().leadingAndTrailingTextStyle ??
-                  const TextStyle(),
-              child: trailing ?? (onTap != null ? CUWidget.arrowForward : const SizedBox.shrink()),
-            ),
-            SizedBox(width: padding),
-          ],
+          ),
         ),
-        padding: padding,
-        outPadding: outPadding,
-        onTap: onTap,
-        color: color,
-        tip: tip,
-        radius: radius,
-        allPadding: false,
-        limitHeight: true,
-      );
+        DefaultTextStyle(
+          style:
+              Theme.of(context).textTheme.bodyMedium ??
+              Theme.of(context).listTileTheme.leadingAndTrailingTextStyle ??
+              const ListTileThemeData().leadingAndTrailingTextStyle ??
+              const TextStyle(),
+          child: trailing ?? (onTap != null ? CUWidget.arrowForward : const SizedBox.shrink()),
+        ),
+        SizedBox(width: padding),
+      ],
+    ),
+    padding: padding,
+    outPadding: outPadding,
+    onTap: onTap,
+    color: color,
+    tip: tip,
+    radius: radius,
+    allPadding: false,
+    limitHeight: true,
+  );
 }
 
 class CUTopBar extends StatelessWidget implements PreferredSizeWidget {
@@ -222,42 +216,29 @@ class CUTopBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(60);
   @override
   Widget build(final ctx) => ClipRRect(
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: AppBar(
-            backgroundColor: Theme.of(ctx).colorScheme.surface.withAlpha(22),
-            elevation: 0,
-            scrolledUnderElevation: 0,
-            titleSpacing: 24,
-            leading: leading,
-            title: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (icon != null) ...[
-                  icon!,
-                  const SizedBox(width: 16),
-                ],
-                if (title != null) title!,
-              ],
-            ),
-            actions: [
-              if (actions != null) ...actions!,
-              if (NGATool.isDesktop)
-                const SizedBox(
-                  width: 138,
-                  height: 60,
-                  child: WindowCaption(backgroundColor: Colors.transparent),
-                ),
-            ],
-          ),
+    child: BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+      child: AppBar(
+        backgroundColor: Theme.of(ctx).colorScheme.surface.withAlpha(22),
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        titleSpacing: 24,
+        leading: leading,
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (icon != null) ...[icon!, const SizedBox(width: 16)],
+            if (title != null) title!,
+          ],
         ),
-      ).let(
-        (final widget) => NGATool.isDesktop
-            ? DragToMoveArea(
-                child: widget,
-              )
-            : widget,
-      );
+        actions: [
+          if (actions != null) ...actions!,
+          if (NGATool.isDesktop)
+            const SizedBox(width: 138, height: 60, child: WindowCaption(backgroundColor: Colors.transparent)),
+        ],
+      ),
+    ),
+  ).let((final widget) => NGATool.isDesktop ? DragToMoveArea(child: widget) : widget);
 }
 
 class CUNavBarGroup {
@@ -268,8 +249,7 @@ class CUNavBarGroup {
 }
 
 class CUNavBarGroupSub {
-  CUNavBarGroupSub(
-      {required this.icon, required this.name, required this.page, this.can, this.whyCannot});
+  CUNavBarGroupSub({required this.icon, required this.name, required this.page, this.can, this.whyCannot});
 
   final IconData icon;
   final String name;
@@ -310,51 +290,49 @@ class CUNavBar extends StatelessWidget {
 
   @override
   Widget build(final ctx) => Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: CUCard(
-              Container(
-                constraints: BoxConstraints(maxHeight: maxHeight ?? MediaQuery.of(ctx).size.height / 2.5),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      onPressed: () => WidgetsBinding.instance.addPostFrameCallback((final _) {
-                        var pos = -(MediaQuery.of(ctx).size.width > MediaQuery.of(ctx).size.height
-                            ? MediaQuery.of(ctx).size.width / 3
-                            : MediaQuery.of(ctx).size.width * 0.75);
-                        OverlayEntry? overlayEntry;
-                        overlayEntry = OverlayEntry(
-                          builder: (final context) => Stack(
-                            children: [
-                              GestureDetector(
-                                onTap: () => overlayEntry?.remove(),
-                                child: Container(color: Colors.black.withAlpha(127)),
-                              ),
-                              AnimatedPositioned(
-                                duration: duration ?? const Duration(milliseconds: 150),
-                                left: pos,
-                                top: 0,
-                                bottom: 0,
-                                child: SafeArea(
-                                  child: Material(
-                                    color: Colors.transparent,
-                                    child: SizedBox(
-                                      width: MediaQuery.of(context).size.width >
-                                              MediaQuery.of(context).size.height
-                                          ? MediaQuery.of(context).size.width / 3
-                                          : MediaQuery.of(context).size.width * 0.75,
-                                      child: CUCard(
-                                        ((final List<CUNavBarGroup> target) => target
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Align(
+        alignment: Alignment.bottomLeft,
+        child: CUCard(
+          Container(
+            constraints: BoxConstraints(maxHeight: maxHeight ?? MediaQuery.of(ctx).size.height / 2.5),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  onPressed: () => WidgetsBinding.instance.addPostFrameCallback((final _) {
+                    var pos = -(MediaQuery.of(ctx).size.width > MediaQuery.of(ctx).size.height
+                        ? MediaQuery.of(ctx).size.width / 3
+                        : MediaQuery.of(ctx).size.width * 0.75);
+                    OverlayEntry? overlayEntry;
+                    overlayEntry = OverlayEntry(
+                      builder: (final context) => Stack(
+                        children: [
+                          GestureDetector(
+                            onTap: () => overlayEntry?.remove(),
+                            child: Container(color: Colors.black.withAlpha(127)),
+                          ),
+                          AnimatedPositioned(
+                            duration: duration ?? const Duration(milliseconds: 150),
+                            left: pos,
+                            top: 0,
+                            bottom: 0,
+                            child: SafeArea(
+                              child: Material(
+                                color: Colors.transparent,
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width > MediaQuery.of(context).size.height
+                                      ? MediaQuery.of(context).size.width / 3
+                                      : MediaQuery.of(context).size.width * 0.75,
+                                  child: CUCard(
+                                    ((final List<CUNavBarGroup> target) => target
                                             .map(
                                               (final group) => Column(
                                                 children: [
                                                   if (group.name.isNotEmpty)
-                                                    CUHeadLabel(group.name,
-                                                        left: CUWidget.lessLeftPadding),
+                                                    CUHeadLabel(group.name, left: CUWidget.lessLeftPadding),
                                                   CUCard(
                                                     Column(
                                                       children: group.sub.map((final sub) {
@@ -363,9 +341,7 @@ class CUNavBar extends StatelessWidget {
                                                         return SizedBox(
                                                           key: _fullKeys[targetIndex],
                                                           child: AnimatedBuilder(
-                                                            animation: Listenable.merge(
-                                                              [index, can, CUWidget.themeColor],
-                                                            ),
+                                                            animation: Listenable.merge([index, can, CUWidget.themeColor]),
                                                             builder: (final _, final __) => AbsorbPointer(
                                                               absorbing: !can.value,
                                                               child: CUProCard(
@@ -375,17 +351,15 @@ class CUNavBar extends StatelessWidget {
                                                                   color: index.value == targetIndex
                                                                       ? CUWidget.themeColor.value
                                                                       : can.value
-                                                                          ? null
-                                                                          : Colors.grey,
+                                                                      ? null
+                                                                      : Colors.grey,
                                                                 ),
-                                                                subtitle:
-                                                                    !can.value && sub.whyCannot != null
-                                                                        ? Text(sub.whyCannot!)
-                                                                        : null,
+                                                                subtitle: !can.value && sub.whyCannot != null
+                                                                    ? Text(sub.whyCannot!)
+                                                                    : null,
                                                                 onTap: () {
                                                                   _history.value.add(targetIndex);
-                                                                  _history.value =
-                                                                      _history.value.toList();
+                                                                  _history.value = _history.value.toList();
                                                                   index.value = targetIndex;
                                                                   onChange?.call(targetIndex);
                                                                   overlayEntry?.remove();
@@ -403,178 +377,164 @@ class CUNavBar extends StatelessWidget {
                                                 ],
                                               ),
                                             )
-                                            .toList()).let(
+                                            .toList())
+                                        .let(
                                           (final func) => Column(
                                             children: [
                                               Expanded(
-                                                child: SingleChildScrollView(
-                                                  child: Column(children: func(groups)),
-                                                ),
+                                                child: SingleChildScrollView(child: Column(children: func(groups))),
                                               ),
                                               SizedBox(
                                                 height: MediaQuery.of(context).size.height * 0.25,
-                                                child: SingleChildScrollView(
-                                                  child: Column(children: func(constGroups)),
-                                                ),
+                                                child: SingleChildScrollView(child: Column(children: func(constGroups))),
                                               ),
                                             ],
                                           ),
                                         ),
-                                        outPadding: 0,
-                                        color: Theme.of(context).colorScheme.surface,
-                                        radius: const BorderRadius.only(
-                                          topRight: Radius.circular(CUWidget.radiusNum),
-                                          bottomRight: Radius.circular(CUWidget.radiusNum),
-                                        ),
-                                      ),
+                                    outPadding: 0,
+                                    color: Theme.of(context).colorScheme.surface,
+                                    radius: const BorderRadius.only(
+                                      topRight: Radius.circular(CUWidget.radiusNum),
+                                      bottomRight: Radius.circular(CUWidget.radiusNum),
                                     ),
                                   ),
                                 ),
                               ),
-                            ],
+                            ),
                           ),
-                        );
-                        Overlay.of(ctx).insert(overlayEntry);
-                        Future<void>.delayed(
-                          const Duration(milliseconds: 50),
-                          () => WidgetsBinding.instance.addPostFrameCallback((final _) {
-                            pos = 0;
-                            overlayEntry?.markNeedsBuild();
-                            Scrollable.ensureVisible(
-                              _fullKeys[index.value].currentContext!,
-                              duration: duration ?? const Duration(milliseconds: 150),
-                              alignment: 0.5,
-                            );
-                          }),
+                        ],
+                      ),
+                    );
+                    Overlay.of(ctx).insert(overlayEntry);
+                    Future<void>.delayed(
+                      const Duration(milliseconds: 50),
+                      () => WidgetsBinding.instance.addPostFrameCallback((final _) {
+                        pos = 0;
+                        overlayEntry?.markNeedsBuild();
+                        Scrollable.ensureVisible(
+                          _fullKeys[index.value].currentContext!,
+                          duration: duration ?? const Duration(milliseconds: 150),
+                          alignment: 0.5,
                         );
                       }),
-                      icon: const Icon(Icons.menu),
-                      tooltip: MaterialLocalizations.of(ctx).showMenuTooltip,
-                    ),
-                    Flexible(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: _allSubs
-                              .asMap()
-                              .entries
-                              .map(
-                                (final entry) => SizedBox(
-                                  key: _miniKeys[entry.key],
-                                  child: AnimatedBuilder(
-                                    animation:
-                                        Listenable.merge([index, entry.value.can, CUWidget.themeColor]),
-                                    builder: (final _, final __) {
-                                      if (index.value == entry.key)
-                                        WidgetsBinding.instance.addPostFrameCallback((final _) {
-                                          Scrollable.ensureVisible(
-                                            _miniKeys[entry.key].currentContext!,
-                                            duration: duration ?? const Duration(milliseconds: 150),
-                                            alignment: 0.5,
-                                          );
-                                        });
-                                      return AbsorbPointer(
-                                        absorbing: !entry.value.can!.value,
-                                        child: IconButton(
-                                          onPressed: () =>
-                                              WidgetsBinding.instance.addPostFrameCallback((final _) {
-                                            _history.value.add(entry.key);
-                                            _history.value = _history.value.toList();
-                                            index.value = entry.key;
-                                            onChange?.call(entry.key);
-                                          }),
-                                          icon: Icon(
-                                            entry.value.icon,
-                                            color: entry.value.can!.value ? null : Colors.grey,
-                                          ),
-                                          tooltip: entry.value.name,
-                                          color:
-                                              index.value == entry.key ? CUWidget.themeColor.value : null,
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                        ),
-                      ),
-                    ),
-                    ValueListenableBuilder(
-                      valueListenable: _history,
-                      builder: (final _, final List<int> value, final __) => AbsorbPointer(
-                        absorbing: value.isEmpty,
-                        child: IconButton(
-                          onPressed: () => WidgetsBinding.instance.addPostFrameCallback((final _) {
-                            if (value.isNotEmpty) value.removeLast();
-                            index.value = value.isNotEmpty ? value.last : 0;
-                            _history.value = value.toList();
-                            onBack?.call(index.value);
-                          }),
-                          icon: Icon(Icons.arrow_back, color: value.isEmpty ? Colors.grey : null),
-                          tooltip: MaterialLocalizations.of(ctx).backButtonTooltip,
-                        ),
-                      ),
-                    ),
-                  ],
+                    );
+                  }),
+                  icon: const Icon(Icons.menu),
+                  tooltip: MaterialLocalizations.of(ctx).showMenuTooltip,
                 ),
-              ),
-              padding: 5,
-              outPadding: 0,
-              radius: const BorderRadius.only(topRight: Radius.circular(CUWidget.radiusNum)),
-            ),
-          ),
-          Expanded(
-            child: ValueListenableBuilder(
-              valueListenable: index,
-              builder: (final _, final int value, final __) => _allSubs.isEmpty
-                  ? const SizedBox.shrink()
-                  : AnimatedSwitcher(
-                      duration: duration ?? const Duration(milliseconds: 150),
-                      child: SizedBox(key: ValueKey(value), child: _allSubs[value].page),
+                Flexible(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: _allSubs
+                          .asMap()
+                          .entries
+                          .map(
+                            (final entry) => SizedBox(
+                              key: _miniKeys[entry.key],
+                              child: AnimatedBuilder(
+                                animation: Listenable.merge([index, entry.value.can, CUWidget.themeColor]),
+                                builder: (final _, final __) {
+                                  if (index.value == entry.key)
+                                    WidgetsBinding.instance.addPostFrameCallback((final _) {
+                                      Scrollable.ensureVisible(
+                                        _miniKeys[entry.key].currentContext!,
+                                        duration: duration ?? const Duration(milliseconds: 150),
+                                        alignment: 0.5,
+                                      );
+                                    });
+                                  return AbsorbPointer(
+                                    absorbing: !entry.value.can!.value,
+                                    child: IconButton(
+                                      onPressed: () => WidgetsBinding.instance.addPostFrameCallback((final _) {
+                                        _history.value.add(entry.key);
+                                        _history.value = _history.value.toList();
+                                        index.value = entry.key;
+                                        onChange?.call(entry.key);
+                                      }),
+                                      icon: Icon(entry.value.icon, color: entry.value.can!.value ? null : Colors.grey),
+                                      tooltip: entry.value.name,
+                                      color: index.value == entry.key ? CUWidget.themeColor.value : null,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          )
+                          .toList(),
                     ),
+                  ),
+                ),
+                ValueListenableBuilder(
+                  valueListenable: _history,
+                  builder: (final _, final List<int> value, final __) => AbsorbPointer(
+                    absorbing: value.isEmpty,
+                    child: IconButton(
+                      onPressed: () => WidgetsBinding.instance.addPostFrameCallback((final _) {
+                        if (value.isNotEmpty) value.removeLast();
+                        index.value = value.isNotEmpty ? value.last : 0;
+                        _history.value = value.toList();
+                        onBack?.call(index.value);
+                      }),
+                      icon: Icon(Icons.arrow_back, color: value.isEmpty ? Colors.grey : null),
+                      tooltip: MaterialLocalizations.of(ctx).backButtonTooltip,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-        ],
-      );
+          padding: 5,
+          outPadding: 0,
+          radius: const BorderRadius.only(topRight: Radius.circular(CUWidget.radiusNum)),
+        ),
+      ),
+      Expanded(
+        child: ValueListenableBuilder(
+          valueListenable: index,
+          builder: (final _, final int value, final __) => _allSubs.isEmpty
+              ? const SizedBox.shrink()
+              : AnimatedSwitcher(
+                  duration: duration ?? const Duration(milliseconds: 150),
+                  child: SizedBox(key: ValueKey(value), child: _allSubs[value].page),
+                ),
+        ),
+      ),
+    ],
+  );
 }
 
 class CUTxtButton extends StatelessWidget {
-  const CUTxtButton(this.txt, this.onTap, {final Key? key, this.intrinsic = false, this.tip = ''})
-      : super(key: key);
+  const CUTxtButton(this.txt, this.onTap, {final Key? key, this.intrinsic = false, this.tip = ''}) : super(key: key);
   final Widget txt;
   final VoidCallback onTap;
   final bool intrinsic;
   final String tip;
   @override
   Widget build(final ctx) => Material(
-        color: Colors.grey.withAlpha(22),
+    color: Colors.grey.withAlpha(22),
+    borderRadius: CUWidget.radius,
+    child: Tooltip(
+      message: tip,
+      child: InkWell(
+        onTap: onTap,
         borderRadius: CUWidget.radius,
-        child: Tooltip(
-          message: tip,
-          child: InkWell(
-            onTap: onTap,
-            borderRadius: CUWidget.radius,
-            child: intrinsic
-                ? IntrinsicWidth(
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: CUWidget.radius,
-                      ),
-                      child: Center(child: txt),
-                    ),
-                  )
-                : Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      borderRadius: CUWidget.radius,
-                    ),
-                    child: Center(child: txt),
-                  ),
-          ),
-        ),
-      );
+        child: intrinsic
+            ? IntrinsicWidth(
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(borderRadius: CUWidget.radius),
+                  child: Center(child: txt),
+                ),
+              )
+            : Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(borderRadius: CUWidget.radius),
+                child: Center(child: txt),
+              ),
+      ),
+    ),
+  );
 }
 
 class CUWidget extends StatelessWidget {
@@ -587,9 +547,7 @@ class CUWidget extends StatelessWidget {
       SystemTheme.fallbackColor = red;
       SystemTheme.accentColor.load().then((final _) {
         _themeColor.value = SystemTheme.accentColor.accent.withAlpha(255);
-        SystemTheme.onChange.listen(
-          (final _) => _themeColor.value = SystemTheme.accentColor.accent.withAlpha(255),
-        );
+        SystemTheme.onChange.listen((final _) => _themeColor.value = SystemTheme.accentColor.accent.withAlpha(255));
       });
       _themeColorListener = true;
     }
@@ -634,9 +592,7 @@ class CUWidget extends StatelessWidget {
   final Widget child;
   @override
   Widget build(final context) => SizedBox(
-        height: CUWidget.height - CUWidget.padding / 2,
-        child: FittedBox(
-          child: child,
-        ),
-      );
+    height: CUWidget.height - CUWidget.padding / 2,
+    child: FittedBox(child: child),
+  );
 }

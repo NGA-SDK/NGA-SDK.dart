@@ -37,34 +37,34 @@ class NGACard extends StatelessWidget {
   final String tip;
   @override
   Widget build(final ctx) => Padding(
-        padding: isAllPadding ? EdgeInsets.all(outPadding) : EdgeInsets.symmetric(horizontal: outPadding),
-        child: ClipRRect(
+    padding: isAllPadding ? EdgeInsets.all(outPadding) : EdgeInsets.symmetric(horizontal: outPadding),
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(radius),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Material(
+          color: Colors.transparent,
           borderRadius: BorderRadius.circular(radius),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-            child: Material(
-              color: Colors.transparent,
+          child: Tooltip(
+            message: tip,
+            child: InkWell(
+              onTap: onTap,
               borderRadius: BorderRadius.circular(radius),
-              child: Tooltip(
-                message: tip,
-                child: InkWell(
-                  onTap: onTap,
+              child: Container(
+                padding: EdgeInsets.all(padding),
+                decoration: BoxDecoration(
+                  color: (useWhite ? Colors.white : Colors.grey).withAlpha(alpha),
                   borderRadius: BorderRadius.circular(radius),
-                  child: Container(
-                    padding: EdgeInsets.all(padding),
-                    decoration: BoxDecoration(
-                      color: (useWhite ? Colors.white : Colors.grey).withAlpha(alpha),
-                      borderRadius: BorderRadius.circular(radius),
-                      border: Border.all(color: Theme.of(ctx).colorScheme.outlineVariant),
-                    ),
-                    child: child,
-                  ),
+                  border: Border.all(color: Theme.of(ctx).colorScheme.outlineVariant),
                 ),
+                child: child,
               ),
             ),
           ),
         ),
-      );
+      ),
+    ),
+  );
 }
 
 class NGACards extends StatelessWidget {
@@ -84,32 +84,35 @@ class NGACards extends StatelessWidget {
   final bool useWhite, isAllPadding;
   @override
   Widget build(final ctx) => Padding(
-        padding: isAllPadding ? EdgeInsets.all(outPadding) : EdgeInsets.symmetric(horizontal: outPadding),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(radius),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-            child: Container(
-              decoration: BoxDecoration(
-                color: (useWhite ? Colors.white : Colors.grey).withAlpha(alpha),
-                borderRadius: BorderRadius.circular(radius),
-                border: Border.all(color: Theme.of(ctx).colorScheme.outlineVariant),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(height: padding),
-                  for (int i = 0; i < children.length; i++) ...[
-                    Padding(padding: EdgeInsets.symmetric(horizontal: padding), child: children[i]),
-                    if (i < children.length - 1) const Divider(),
-                  ],
-                  SizedBox(height: padding),
-                ],
-              ),
-            ),
+    padding: isAllPadding ? EdgeInsets.all(outPadding) : EdgeInsets.symmetric(horizontal: outPadding),
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(radius),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          decoration: BoxDecoration(
+            color: (useWhite ? Colors.white : Colors.grey).withAlpha(alpha),
+            borderRadius: BorderRadius.circular(radius),
+            border: Border.all(color: Theme.of(ctx).colorScheme.outlineVariant),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: padding),
+              for (int i = 0; i < children.length; i++) ...[
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: padding),
+                  child: children[i],
+                ),
+                if (i < children.length - 1) const Divider(),
+              ],
+              SizedBox(height: padding),
+            ],
           ),
         ),
-      );
+      ),
+    ),
+  );
 }
 
 class NGAMsg {
@@ -144,43 +147,38 @@ class NGAMsg {
         break;
     }
     OverlayEntry toastOverlayEntry(final Tween<Offset> tween) => OverlayEntry(
-          builder: (final ctx) => Positioned(
-            top: MediaQuery.of(ctx).size.height * 0.075,
-            left: MediaQuery.of(ctx).size.width * 0.1,
-            right: MediaQuery.of(ctx).size.width * 0.1,
-            child: TweenAnimationBuilder(
-              tween: tween,
-              duration: const Duration(milliseconds: 300),
-              builder: (final ctx, final Offset offset, final Widget? child) =>
-                  Transform.translate(offset: offset * MediaQuery.of(ctx).size.height, child: child),
-              child: Center(
-                child: ClipRRect(
+      builder: (final ctx) => Positioned(
+        top: MediaQuery.of(ctx).size.height * 0.075,
+        left: MediaQuery.of(ctx).size.width * 0.1,
+        right: MediaQuery.of(ctx).size.width * 0.1,
+        child: TweenAnimationBuilder(
+          tween: tween,
+          duration: const Duration(milliseconds: 300),
+          builder: (final ctx, final Offset offset, final Widget? child) =>
+              Transform.translate(offset: offset * MediaQuery.of(ctx).size.height, child: child),
+          child: Center(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: Material(
+                  color: Colors.transparent,
                   borderRadius: BorderRadius.circular(16),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                    child: Material(
-                      color: Colors.transparent,
+                  child: Tooltip(
+                    message: tip,
+                    child: InkWell(
+                      onTap: onTap,
                       borderRadius: BorderRadius.circular(16),
-                      child: Tooltip(
-                        message: tip,
-                        child: InkWell(
-                          onTap: onTap,
-                          borderRadius: BorderRadius.circular(16),
-                          child: Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withAlpha(128),
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(icon, color: color),
-                                const SizedBox(width: 12),
-                                Text(txt, style: TextStyle(color: color)),
-                              ],
-                            ),
-                          ),
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(color: Colors.white.withAlpha(128), borderRadius: BorderRadius.circular(16)),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(icon, color: color),
+                            const SizedBox(width: 12),
+                            Text(txt, style: TextStyle(color: color)),
+                          ],
                         ),
                       ),
                     ),
@@ -189,7 +187,9 @@ class NGAMsg {
               ),
             ),
           ),
-        );
+        ),
+      ),
+    );
 
     final goEntry = toastOverlayEntry(Tween(begin: const Offset(0, -1), end: Offset.zero));
     overlayState.insert(goEntry);
@@ -223,39 +223,39 @@ class NGATxtButton extends StatelessWidget {
   final String tip;
   @override
   Widget build(final ctx) => ClipRRect(
+    borderRadius: BorderRadius.circular(radius),
+    child: BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+      child: Material(
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(radius),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: Material(
-            color: Colors.transparent,
+        child: Tooltip(
+          message: tip,
+          child: InkWell(
+            onTap: onTap,
             borderRadius: BorderRadius.circular(radius),
-            child: Tooltip(
-              message: tip,
-              child: InkWell(
-                onTap: onTap,
-                borderRadius: BorderRadius.circular(radius),
-                child: intrinsic
-                    ? IntrinsicWidth(
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: (useWhite ? Colors.white : Colors.grey).withAlpha(alpha),
-                            borderRadius: BorderRadius.circular(radius),
-                          ),
-                          child: Center(child: txt),
-                        ),
-                      )
-                    : Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: (useWhite ? Colors.white : Colors.grey).withAlpha(alpha),
-                          borderRadius: BorderRadius.circular(radius),
-                        ),
-                        child: Center(child: txt),
+            child: intrinsic
+                ? IntrinsicWidth(
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: (useWhite ? Colors.white : Colors.grey).withAlpha(alpha),
+                        borderRadius: BorderRadius.circular(radius),
                       ),
-              ),
-            ),
+                      child: Center(child: txt),
+                    ),
+                  )
+                : Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: (useWhite ? Colors.white : Colors.grey).withAlpha(alpha),
+                      borderRadius: BorderRadius.circular(radius),
+                    ),
+                    child: Center(child: txt),
+                  ),
           ),
         ),
-      );
+      ),
+    ),
+  );
 }

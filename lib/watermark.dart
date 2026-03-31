@@ -22,19 +22,17 @@ class NGAWatermark {
   static OverlayEntry? _watermark;
   static void add(final BuildContext ctx, final String txt, {final bool colorful = false}) {
     if (_watermark != null) return;
-    _watermark = OverlayEntry(builder: (final _) => get(ctx, txt, colorful: colorful))
-        .let((final OverlayEntry entry) {
+    _watermark = OverlayEntry(builder: (final _) => get(ctx, txt, colorful: colorful)).let((final OverlayEntry entry) {
       Overlay.of(ctx).insert(entry);
       return entry;
     });
   }
 
-  static Widget get(final BuildContext ctx, final String txt, {final bool colorful = false}) =>
-      Positioned.fill(
-        child: IgnorePointer(
-          child: CustomPaint(size: Size.infinite, painter: _NGAWatermarkPainter(ctx, txt, colorful)),
-        ),
-      );
+  static Widget get(final BuildContext ctx, final String txt, {final bool colorful = false}) => Positioned.fill(
+    child: IgnorePointer(
+      child: CustomPaint(size: Size.infinite, painter: _NGAWatermarkPainter(ctx, txt, colorful)),
+    ),
+  );
   static void remove() => _watermark?.remove();
 }
 
@@ -76,8 +74,7 @@ class _NGAWatermarkPainter extends CustomPainter {
       ..save()
       ..translate(0, size.height)
       ..rotate(-pi / 4);
-    for (var y = -len; y < len; y += stepY)
-      for (var x = -len; x < len; x += stepX) txtPainter.paint(canvas, Offset(x, y));
+    for (var y = -len; y < len; y += stepY) for (var x = -len; x < len; x += stepX) txtPainter.paint(canvas, Offset(x, y));
     canvas.restore();
   }
 
